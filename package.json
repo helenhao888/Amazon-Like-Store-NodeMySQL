@@ -1,0 +1,27 @@
+{
+  "name": "Amazon-Like-Store-NodeMySQL",
+  "version": "1.0.0",
+  "description": "Amazon-like storefront using Node.js and MySQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helenhao888/Amazon-Like-Store-NodeMySQL.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/helenhao888/Amazon-Like-Store-NodeMySQL/issues"
+  },
+  "homepage": "https://github.com/helenhao888/Amazon-Like-Store-NodeMySQL#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "console.table": "^0.10.0",
+    "dotenv": "^8.0.0",
+    "inquirer": "^6.5.0",
+    "mysql": "^2.17.1"
+  }
+}
