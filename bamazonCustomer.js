@@ -72,7 +72,7 @@ function inquirerProduct(){
   inquirer.prompt([
        {
           name:"choice",
-          message:"Please select the product you wanto buy",
+          message:"Please select the product you want to buy",
           type:"rawlist",
           choices: choiceArr},       
        {

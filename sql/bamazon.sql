@@ -8,10 +8,26 @@ CREATE TABLE products (
     department_name VARCHAR(30) NOT NULL,
     price  DECIMAL(10,2),
     stock_quantity INT(10),
-    product_sales DECIMAL(20,2),
+    product_sales DECIMAL(20,2) DEFAULT 0,
     update_stamp  DATETIME,
     PRIMARY KEY(item_id)
 );
+
+CREATE TABLE departments(
+    department_id CHAR(4) NOT NULL,
+    department_name VARCHAR(30) NOT NULL,
+    over_head_costs INT(8),
+    PRIMARY KEY(department_id)
+);
+
+INSERT INTO departments (department_id, department_name,over_head_costs )
+            VALUES ("0001","Computers",10001);
+INSERT INTO departments (department_id, department_name,over_head_costs )
+            VALUES ("0002","Movies",20002);                     
+INSERT INTO departments (department_id, department_name,over_head_costs )
+            VALUES ("0003","Books",3003);  
+INSERT INTO departments (department_id, department_name,over_head_costs )
+            VALUES ("0004","Toys",4004);  
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
                   update_stamp) 
@@ -50,4 +66,6 @@ INSERT INTO products (product_name,department_name,price,stock_quantity,
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
-            VALUES ("Fairy Tales","Books",18.28,400,"2019-07-14 02:01:01");                         
+            VALUES ("Fairy Tales","Books",18.28,400,"2019-07-14 02:01:01");        
+
+
