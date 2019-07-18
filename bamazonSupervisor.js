@@ -7,16 +7,15 @@ require("dotenv").config();
 var keys = require("./keys");
 const cTable = require("console.table");
 
-var itemArr=[];
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: keys.db.passwd,
-  database: "bamazon"
-});
+    host: keys.db.host,
+    port: keys.db.port,
+    user: keys.db.user,
+    password: keys.db.passwd,
+    database: keys.db.db
+  });
 
 // connect to the mysql server and sql database
 connection.connect(function(err){
@@ -53,6 +52,7 @@ function listOptions(){
     })
 }
 
+//join products and departments tables to dispaly the total costs , sales and profit info
 function viewProduct(){
 
     var queryS= "select department_id, department_name, over_head_costs, product_sales,";
@@ -78,6 +78,7 @@ function viewProduct(){
     })
 }
 
+//add a new department
 function addDepartment(){
 
     inquirer.prompt([
@@ -86,6 +87,7 @@ function addDepartment(){
             type:"input",
             message:"Please input the department id you want to add:",
             validate:function(value){
+                //department id must be 4 characters
                 var pass = value.match(/^[0-9a-zA-Z]{4,4}$/
                   );
                   if(pass){
@@ -100,7 +102,6 @@ function addDepartment(){
             message:"Please input the department name you want to add:"
         
     }]).then(function(answers){
-        console.log("answers",answers);
         
         connection.query("insert into departments set ?",
             {
@@ -111,7 +112,7 @@ function addDepartment(){
 
                 if (err)  throw err;
           
-                console.log("Created department "+answers.departName+" successfully!");
+                console.log(chalk.blue("Created department "+answers.departName+" successfully!"));
                 listOptions();
 
         })

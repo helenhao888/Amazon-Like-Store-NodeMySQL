@@ -16,49 +16,47 @@ CREATE TABLE products (
 CREATE TABLE departments(
     department_id CHAR(4) NOT NULL,
     department_name VARCHAR(30) NOT NULL,
-    over_head_costs INT(8),
+    over_head_costs INT(8) DEFAULT 0,
     PRIMARY KEY(department_id)
 );
 
 INSERT INTO departments (department_id, department_name,over_head_costs )
-            VALUES ("0001","Computers",10001);
+            VALUES ("0001","Computers",48000);                    
 INSERT INTO departments (department_id, department_name,over_head_costs )
-            VALUES ("0002","Movies",20002);                     
+            VALUES ("0003","Books",19200);  
 INSERT INTO departments (department_id, department_name,over_head_costs )
-            VALUES ("0003","Books",3003);  
-INSERT INTO departments (department_id, department_name,over_head_costs )
-            VALUES ("0004","Toys",4004);  
+            VALUES ("0004","Toys",8000);  
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
                   update_stamp) 
-            VALUES ("Dell laptop","Computers",1000.5,200,"2019-07-14 02:01:01");      
+            VALUES ("Dell laptop","Computers",1000,100,"2019-07-14 02:01:01");      
  
 INSERT INTO products (product_name,department_name,price,stock_quantity,
                   update_stamp) 
-            VALUES ("Lenovo laptop","Computers",1100.6,200,"2019-07-14 02:01:01"); 
+            VALUES ("Lenovo laptop","Computers",2000,100,"2019-07-14 02:01:01"); 
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
                   update_stamp) 
-            VALUES ("HP laptop","Computers",900,200,"2019-07-14 02:01:01");
+            VALUES ("HP laptop","Computers",3000,100,"2019-07-14 02:01:01");
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
                   update_stamp) 
-            VALUES ("Lego Set","Toys",30.01,300,"2019-07-14 02:01:01");           
+            VALUES ("Lego Set","Toys",30.00,100,"2019-07-14 02:01:01");           
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
-            VALUES ("Disney Story","Toys",35.01,300,"2019-07-14 02:01:01");  
+            VALUES ("Disney Story","Toys",30,100,"2019-07-14 02:01:01");  
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
-            VALUES ("Baby Slide","Toys",35.01,300,"2019-07-14 02:01:01");  
+            VALUES ("Baby Slide","Toys",40,100,"2019-07-14 02:01:01");  
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
-            VALUES ("Social Study book","Books",15.08,400,"2019-07-14 02:01:01");  
+            VALUES ("Social Study book","Books",15.01,400,"2019-07-14 02:01:01");  
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
-            VALUES ("Geography book","Books",12.28,400,"2019-07-14 02:01:01"); 
+            VALUES ("Geography book","Books",14.99,400,"2019-07-14 02:01:01"); 
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
@@ -66,6 +64,6 @@ INSERT INTO products (product_name,department_name,price,stock_quantity,
 
 INSERT INTO products (product_name,department_name,price,stock_quantity,
         update_stamp) 
-            VALUES ("Fairy Tales","Books",18.28,400,"2019-07-14 02:01:01");        
+            VALUES ("Fairy Tales","Books",14.72,400,"2019-07-14 02:01:01");        
 
 

@@ -8,15 +8,17 @@ var keys = require("./keys");
 const cTable = require("console.table");
 
 var itemArr=[];
+const costRate=0.8;
+const lowInventoryNum =5;
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: keys.db.passwd,
-  database: "bamazon"
-});
+    host: keys.db.host,
+    port: keys.db.port,
+    user: keys.db.user,
+    password: keys.db.passwd,
+    database: keys.db.db
+  });
 
 // connect to the mysql server and sql database
 connection.connect(function(err){
@@ -27,12 +29,13 @@ connection.connect(function(err){
 
 })
 
+//the main options for the manager
 function listOptions(){
 
     inquirer.prompt([{
         name:"action",
         type:"list",
-        message:"What would you like to do?",        
+        message:"\n\nWhat would you like to do?",        
         choices:[
                  "View Products for Sale",
                  "View Low Inventory",
@@ -57,35 +60,39 @@ function listOptions(){
     })
 }
 
+//list all the products' information retrieved from products table
 function viewProduct(){
+
+    console.log(chalk.gray("\n---------Product List ---------\n"));
 
     connection.query("select item_id,product_name, concat('$',format(price,2)) as price,                 stock_quantity from products", function(err,res){
         
           if (err) throw err;
-          console.table(res);
 
+          console.table(res);
           listOptions();
     })
 }
 
 
-
+//select products table to get the products whose stock_quantity is in lower status
 function viewInventory(){
     connection.query("select item_id,product_name, concat('$',format(price,2)) as price,     stock_quantity from products where stock_quantity < ?", 
-    [5],function(err,res){
+    [lowInventoryNum],function(err,res){
 
         if (err) throw err;
         
         if(res.length >0 ){
-            console.log("The following itmes are in low inventory, please add them !");
+            console.log(chalk.yellow("\nThe following itmes are in low inventory, please add them !"));
             console.table(res);           
         }else{
-            console.log("No low inventory found!");
+            console.log(chalk.green("\nNo low inventory found!"));
         }   
         listOptions();
     })
 }
 
+//add the stock quantity for the selected product , then update the department's over_head_cost
 function addInventory(){
    
     inquirer.prompt([{
@@ -156,13 +163,15 @@ function addProduct(){
         }
     }
    ]).then(function(res){       
-
-       console.log("res",res.number);
-       insertProduct(res.name,res.department,res.price,res.number);
+        //when add a new product, first check the product's department exists in the 
+        //departments table. If it exists, continue to insert product and update 
+        //department's over head cost.If it doesn't exist, display incorrect department or need supervisor to add the new department
+         checkDepartment(res.name,res.department,res.price,res.number);
       
    })
 }
 
+//get all the item id and product name from products table
 function queryProduct(){
 
     itemArr=[];
@@ -172,38 +181,58 @@ function queryProduct(){
             if (err) throw err;
             res.forEach( xProduct => {
                 itemArr.push(xProduct.item_id+" "+xProduct.product_name);
-             });
-             
-             console.log("item arr",itemArr);
+             });             
+            
              addInventory();
         })
 }
 
+//when add a product's stock quantity, update products table
 function updateInventory(id,number){
 
-   connection.query("select price,stock_quantity from products where ?",
+   connection.query("select price,department_name,stock_quantity from products where ?",
              {item_id:id},function(err,res){
       
       if(err) throw err;
       var quantity = parseInt(res[0].stock_quantity)+parseInt(number);      
-
+      var cost = parseInt(number) * res[0].price;
       
       connection.query("update products set ? where ?",
         [{stock_quantity:quantity},
         {item_id:id}],function(error){
             if (error) throw error;
-            console.log("Product inventory added successfuly!");
-            console.log("The total number of this product id "+id +
-                        "is "+quantity+" now !");
-                    
-            listOptions();
+            console.log(chalk.blue("\nProduct inventory added successfuly!"));
+            console.log(chalk.blue("\nThe total number of this product id "+id +
+                        " is "+quantity+" now !"));
+            updateDepartment(res[0].department_name,cost);        
+            
         })
       })
   
 }
 
-function insertProduct(name,department,price,number){
+//check if the department name exists in departments table
+function checkDepartment(name,department,price,number){
 
+    connection.query("select department_name,count(*) as count from departments where ?",
+        {
+            department_name:department
+        },function(err,res){
+            if(err) throw err;
+            
+            if(res[0].count != 0){
+                //if the department name exists in departments table, insert the new product
+                insertProduct(name,department,price,number);
+            }else{
+                console.log(chalk.red("\nThe deparment "+department+" doesn't exist in departments table!"));
+                console.log(chalk.red("Please check your input or ask a supervisor to add a new department!"));
+                listOptions();
+            }
+        })
+}
+
+//add a new product to products table
+function insertProduct(name,department,price,number){
     connection.query("insert into products set ?",
                {
                 product_name: name,
@@ -214,9 +243,29 @@ function insertProduct(name,department,price,number){
                function(err,res){
 
                    if(err)  throw err;
-                   console.log("res",res);
-                   console.log("Product added successfully!");
-                   listOptions();
+                   var cost=price*number*costRate;
+                   //when add a product, update the product's deparment's over head cost
+                   updateDepartment(department,cost);
+                   console.log(chalk.blue("\nProduct "+name+" added successfully!"));
                })
-   
+}
+
+//update department's over head costs 
+function updateDepartment(department,cost){
+
+    connection.query("update departments set over_head_costs = over_head_costs + ? where ?",
+    [
+        cost,
+    {
+        department_name:department
+    }]
+    ,function(err,res){
+
+        if (err) throw err;
+
+        console.log(chalk.blue("\nDepartment "+department+"'s over head cost has been updated successfully!"));
+        
+
+        listOptions();
+    })
 }
