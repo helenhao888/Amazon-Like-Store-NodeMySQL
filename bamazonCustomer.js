@@ -105,20 +105,22 @@ function inquirerProduct(){
 //update products table's stock quantity and product sales columns
 function updateProduct(id,number){
 
-  connection.query("select price,stock_quantity from products where ?",
+  connection.query("select price,stock_quantity,product_sales from products where ?",
              {item_id:id},function(err,res){
       
       if(err) throw err;
       
-      var cost = parseInt(number)*parseFloat(res[0].price);
-      var quantity = parseInt(res[0].stock_quantity)-parseInt(number);      
-
-      if(res.stock_quantity < number){
+      console.log("product sales",)
+      var cost = parseInt(number)*res[0].price;
+      var totalCost=res[0].product_sales+cost;
+      var quantity = res[0].stock_quantity-parseInt(number);      
+       
+      if(quantity < 0){
          console.log(chalk.red.bold("Insufficient quantity!"));
          inquirerCustomer();
       }else{
          connection.query("update products set ? where ?",
-               [{stock_quantity:quantity,product_sales:cost},
+               [{stock_quantity:quantity,product_sales:totalCost},
                 {item_id:id}],function(error){
                  if (error) throw error;
                  console.log(chalk.blue("product updated!"));

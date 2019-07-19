@@ -62,7 +62,7 @@ function viewProduct(){
     queryS +=                "sum(a.over_head_costs) as over_head_costs,";
     queryS +=                "sum(b.product_sales) as product_sales ";
     queryS +=         " from departments as a ";
-    queryS +=         "inner join products as b on (a.department_name = b.department_name) ";
+    queryS +=         "left join products as b on (a.department_name = b.department_name) ";
     queryS +=         "GROUP BY department_id ";
     queryS +=         "order by department_id ";
     queryS +=         ") subq   ; "
