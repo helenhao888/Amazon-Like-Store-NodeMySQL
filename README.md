@@ -99,5 +99,5 @@ https://github.com/helenhao888/Amazon-Like-Store-NodeMySQL.git
 ### Contact Information
 
    Helen Hao :
-   [linkedIn](https://www.linkedin.com/in/jinzhao-helen-hao-611b3752/)
-   [GitHub](https://helenhao888.github.io)
+   :link:[linkedIn](https://www.linkedin.com/in/jinzhao-helen-hao-611b3752/) 
+   :link:[Portfolio](https://helenhao888.github.io)
