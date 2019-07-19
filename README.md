@@ -59,7 +59,7 @@ https://github.com/helenhao888/Amazon-Like-Store-NodeMySQL.git
    Supervisor View : `Node bamazonSupervisor`
 
 
-###Screenshots
+### Screenshots
 1. Customer buy a product 
    Before the customer puts an order, use the manager view to display all the products
    ![view products by manager](images/managerViewProduct.jpg)
@@ -95,3 +95,9 @@ https://github.com/helenhao888/Amazon-Like-Store-NodeMySQL.git
    ![customer buy product](images/customerInsuffiQ.jpg)
 
 8. This app includes input validations. Use this app to find more.
+
+### Contact Information
+
+    Helen Hao :
+    [linkedIn](https://www.linkedin.com/in/jinzhao-helen-hao-611b3752/)
+    [GitHub](https://helenhao888.github.io)
